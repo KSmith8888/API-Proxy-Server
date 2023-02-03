@@ -3,15 +3,21 @@ dotenv.config();
 import express from "express";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
-
 import { weather } from "./routes/weather-route.js";
 import { nasa } from "./routes/nasa-route.js";
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(express.json());
 
-app.use(cors({ origin: process.env.ORIGIN }));
+app.use(
+    cors({
+        origin: process.env.ORIGIN,
+        optionsSuccessStatus: 200,
+    })
+);
 
 const limiter = rateLimit({
     windowMs: 60000,
