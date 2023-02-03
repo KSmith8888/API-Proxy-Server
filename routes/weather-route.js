@@ -1,32 +1,41 @@
 import express from "express";
-const weather = express.Router();
-import fetch from "node-fetch";
 import { sanitizeChars } from "./sanitize.js";
 
-const fetchWeather = async (searchtext) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchtext}&units=imperial&appid=${process.env.WEATHER_API_KEY}`;
-    try {
-        const weatherStream = await fetch(url);
-        const weatherJson = await weatherStream.json();
-        return weatherJson;
-    } catch (err) {
-        return { Error: err };
-    }
-};
-
-weather.get("/", (req, res) => {
-    return res.json({ success: "Hello Weather" });
-});
+const weather = express.Router();
+let weatherCache;
+let cacheTime;
 
 weather.get("/:searchtext", async (req, res) => {
     const searchtext = req.params.searchtext;
-    if (!sanitizeChars(searchtext)) {
-        const data = await fetchWeather(searchtext);
-        return res.json(data);
-    } else {
-        return res.json({
-            Error: "please do not include special characters in your request",
-        });
+    const currentTime = Date.now();
+    try {
+        if (sanitizeChars(searchtext)) {
+            throw new Error(
+                "please do not include special characters in your request"
+            );
+        }
+        if (cacheTime && currentTime - cacheTime < 5000) {
+            throw new Error(
+                "Please wait at least five seconds before requesting information for another city"
+            );
+        }
+    } catch (err) {
+        return res.json(`Error: ${err}`);
+    }
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchtext}&units=imperial&appid=${process.env.WEATHER_API_KEY}`;
+    try {
+        const weatherResponse = await fetch(url);
+        if (weatherResponse.ok) {
+            const weatherData = await weatherResponse.json();
+            weatherCache = weatherData;
+            cacheTime = currentTime;
+            weatherData.time = currentTime;
+            return res.json(weatherData);
+        } else {
+            throw new Error(weatherResponse.status);
+        }
+    } catch (err) {
+        return res.json(`Error: ${err}`);
     }
 });
 
