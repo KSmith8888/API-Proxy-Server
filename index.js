@@ -1,4 +1,5 @@
-import dotenv from 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config();
 import express from "express";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
@@ -6,7 +7,6 @@ import { weather } from "./routes/weather-route.js";
 import { nasa } from "./routes/nasa-route.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.set("trust proxy", 1);
 
@@ -33,6 +33,6 @@ app.get("/", (req, res) => {
 app.use("/weather", weather);
 app.use("/nasa", nasa);
 
-app.listen(PORT, () =>
+app.listen(`0.0.0.0:${process.env.PORT}`, () =>
     console.log(`App listening on port ${PORT}`)
 );
