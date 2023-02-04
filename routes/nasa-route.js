@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 
 const nasa = express.Router();
 let nasaCache;
@@ -26,4 +26,4 @@ nasa.get("/", async (req, res) => {
     }
 });
 
-module.exports = nasa;
+export { nasa };
