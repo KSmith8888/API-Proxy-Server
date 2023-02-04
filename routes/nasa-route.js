@@ -6,14 +6,8 @@ let cacheTime;
 
 nasa.get("/", async (req, res) => {
     const currentTime = Date.now();
-    try {
-        if (cacheTime && currentTime - cacheTime < 60000) {
-            throw new Error(
-                "Please wait at least one minute before requesting information again"
-            );
-        }
-    } catch (err) {
-        return res.json(`Error: ${err}`);
+    if (nasaCache && cacheTime && currentTime - cacheTime < 180000) {
+        return res.json(nasaCache);
     }
     const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`;
     try {
@@ -24,10 +18,11 @@ nasa.get("/", async (req, res) => {
             cacheTime = currentTime;
             return res.json(nasaData);
         } else {
+            res.status(nasaResponse.status);
             throw new Error(nasaResponse.status);
         }
     } catch (err) {
-        return res.json(`Error: ${err}`);
+        return res.json(err);
     }
 });
 
