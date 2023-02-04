@@ -1,5 +1,5 @@
-import express from "express";
-import { sanitizeChars } from "./sanitize.js";
+const express = require("express");
+const sanitizeChars = require("./sanitize.js");
 
 const weather = express.Router();
 let weatherCache;
@@ -37,4 +37,4 @@ weather.get("/:searchtext", async (req, res) => {
     }
 });
 
-export { weather };
+module.exports = weather;
