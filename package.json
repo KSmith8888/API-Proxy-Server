@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "A relay server to hide API keys, made with express",
     "main": "index.js",
-    "type": "module",
     "private": "true",
     "engines": {
         "node": ">=18.12.1",
