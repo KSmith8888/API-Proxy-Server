@@ -1,5 +1,4 @@
-import { config } from 'dotenv';
-config();
+import dotenv from 'dotenv/config';
 import express from "express";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
@@ -35,5 +34,5 @@ app.use("/weather", weather);
 app.use("/nasa", nasa);
 
 app.listen(PORT, () =>
-    console.log(`App listening on port ${process.env.PORT}`)
+    console.log(`App listening on port ${PORT}`)
 );
