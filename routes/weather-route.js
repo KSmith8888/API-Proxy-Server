@@ -8,19 +8,16 @@ let cacheTime;
 weather.get("/:searchtext", async (req, res) => {
     const searchtext = req.params.searchtext;
     const currentTime = Date.now();
-    try {
-        if (sanitizeChars(searchtext)) {
-            throw new Error(
-                "please do not include special characters in your request"
-            );
-        }
-        if (cacheTime && currentTime - cacheTime < 5000) {
-            throw new Error(
-                "Please wait at least five seconds before requesting information for another city"
-            );
-        }
-    } catch (err) {
-        return res.json(`Error: ${err}`);
+    if (
+        cacheTime &&
+        currentTime - cacheTime < 500000 &&
+        searchtext.toLowerCase() === weatherCache.name.toLowerCase()
+    ) {
+        return res.json(weatherCache);
+    }
+    if (sanitizeChars(searchtext)) {
+        res.status(400);
+        return res.json("Bad Request");
     }
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchtext}&units=imperial&appid=${process.env.WEATHER_API_KEY}`;
     try {
@@ -32,18 +29,12 @@ weather.get("/:searchtext", async (req, res) => {
             weatherData.time = currentTime;
             return res.json(weatherData);
         } else {
+            res.status(weatherResponse.status);
             throw new Error(weatherResponse.status);
         }
     } catch (err) {
-        return res.json(`Error: ${err}`);
+        return res.json(err);
     }
-});
-
-weather.post("/", async (req, res) => {
-    const searchtext = req.body.searchtext;
-    console.log(req);
-    //const data = await fetchWeather(searchtext);
-    //return res.json(data);
 });
 
 export { weather };
