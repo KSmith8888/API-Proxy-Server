@@ -20,4 +20,4 @@ function sanitizeChars(userInput) {
     }
 }
 
-module.exports = sanitizeChars;
+export { sanitizeChars };
