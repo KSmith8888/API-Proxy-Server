@@ -12,12 +12,7 @@ app.set("trust proxy", 1);
 
 app.use(express.json());
 
-app.use(
-    cors({
-        origin: process.env.ORIGIN,
-        optionsSuccessStatus: 200,
-    })
-);
+app.use(cors());
 
 const limiter = rateLimit({
     windowMs: 60000,
