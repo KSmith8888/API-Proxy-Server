@@ -10,6 +10,7 @@
         "npm": ">=8.19.2"
     },
     "scripts": {
+        "install": "npm install --omit=dev",
         "start": "node index.js",
         "dev": "nodemon index.js"
     },
