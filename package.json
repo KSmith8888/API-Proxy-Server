@@ -4,9 +4,12 @@
     "description": "A relay server to hide API keys, made with express",
     "main": "index.js",
     "type": "module",
-    "license": "ISC",
+    "private": "true",
+    "engines": {
+        "node": ">=18.12.1"
+    },
     "scripts": {
-        "build": "npm install --production",
+        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node index.js",
         "dev": "nodemon index.js"
     },
