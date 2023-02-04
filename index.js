@@ -12,7 +12,10 @@ app.set("trust proxy", 1);
 
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+        origin: process.env.ORIGIN,
+        optionsSuccessStatus: 200,
+    }));
 
 const limiter = rateLimit({
     windowMs: 60000,
@@ -30,6 +33,6 @@ app.get("/", (req, res) => {
 app.use("/weather", weather);
 app.use("/nasa", nasa);
 
-app.listen(process.env.PORT, () =>
+app.listen(0.0.0.0:$process.env.PORT, () =>
     console.log(`App listening on port ${process.env.PORT}`)
 );
