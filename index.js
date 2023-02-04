@@ -1,10 +1,10 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
-const express = require("express");
-const rateLimit = require("express-rate-limit");
-const cors = require("cors");
-const weather = require("./routes/weather-route.js");
-const nasa = require("./routes/nasa-route.js");
+import express from "express";
+import rateLimit from "express-rate-limit";
+import cors from "cors";
+import { weather } from "./routes/weather-route.js";
+import { nasa } from "./routes/nasa-route.js";
 
 const app = express();
 
