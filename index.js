@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import rateLimit from "express-rate-limit";
@@ -12,10 +12,12 @@ app.set("trust proxy", 1);
 
 app.use(express.json());
 
-app.use(cors({
+app.use(
+    cors({
         origin: process.env.ORIGIN,
         optionsSuccessStatus: 200,
-    }));
+    })
+);
 
 const limiter = rateLimit({
     windowMs: 60000,
@@ -33,6 +35,6 @@ app.get("/", (req, res) => {
 app.use("/weather", weather);
 app.use("/nasa", nasa);
 
-app.listen(`0.0.0.0:${process.env.PORT}`, () =>
-    console.log(`App listening on port ${PORT}`)
+app.listen(process.env.PORT, () =>
+    console.log(`App listening on port ${process.env.PORT}`)
 );
