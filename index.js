@@ -7,6 +7,7 @@ import { weather } from "./routes/weather-route.js";
 import { nasa } from "./routes/nasa-route.js";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.set("trust proxy", 1);
 
@@ -33,6 +34,6 @@ app.get("/", (req, res) => {
 app.use("/weather", weather);
 app.use("/nasa", nasa);
 
-app.listen(process.env.PORT, () =>
+app.listen(PORT, () =>
     console.log(`App listening on port ${process.env.PORT}`)
 );
