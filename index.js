@@ -30,6 +30,6 @@ app.get("/", (req, res) => {
 app.use("/weather", weather);
 app.use("/nasa", nasa);
 
-app.listen(`0.0.0.0:$${PORT}`, () =>
+app.listen(`0.0.0.0:$${process.env.PORT}`, () =>
     console.log(`App listening on port ${process.env.PORT}`)
 );
