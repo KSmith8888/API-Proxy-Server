@@ -6,7 +6,8 @@ import cors from "cors";
 
 import { weather } from "./routes/weather-route.js";
 import { nasa } from "./routes/nasa-route.js";
-import { movies } from "./routes/movies-route.js";
+import { movieSearch } from "./routes/movie-search-route.js";
+import { movieDetails } from "./routes/movie-details-route.js";
 
 const app = express();
 const limiter = rateLimit({
@@ -31,7 +32,8 @@ app.get("/", (req, res) => {
     return res.json({ success: "This is not the data you're looking for" });
 });
 
-app.use("/movies", movies);
+app.use("/movies/search", movieSearch);
+app.use("/movies/details", movieDetails);
 app.use("/weather", weather);
 app.use("/nasa", nasa);
 
